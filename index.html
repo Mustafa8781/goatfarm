@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Goat Farm Login</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      width: 320px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .signup {
+      background: #27ae60;
+      color: white;
+    }
+
+    .login {
+      background: #2980b9;
+      color: white;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h2>Goat Farm Login</h2>
+
+    <!-- Name -->
+    <input type="text" id="name" placeholder="Enter Name (for signup)" />
+
+    <!-- Email -->
+    <input type="email" id="email" placeholder="Enter Email" />
+
+    <!-- Password -->
+    <input type="password" id="password" placeholder="Enter Password" />
+
+    <!-- Buttons -->
+    <button type="button" class="signup">Sign Up</button>
+    <button type="button" class="login">Login</button>
+  </div>
+
+  <!-- Firebase Main JS -->
+  <script type="module" src="src/main.js"></script>
+
+</body>
+</html>

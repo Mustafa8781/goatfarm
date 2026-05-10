@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Investor Dashboard - Goat Farm</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+    }
+
+    .logout-btn {
+      background: #ff6b6b;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .logout-btn:hover {
+      background: #ff5252;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .card h3 {
+      color: #667eea;
+      margin-bottom: 10px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card .amount {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin: 10px 0;
+    }
+
+    .card .icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .btn:hover {
+      background: #5568d3;
+    }
+
+    .btn-danger {
+      background: #ff6b6b;
+    }
+
+    .btn-danger:hover {
+      background: #ff5252;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table th {
+      background: #f0f0f0;
+      padding: 12px;
+      text-align: left;
+      color: #333;
+      border-bottom: 2px solid #ddd;
+    }
+
+    table td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    table tr:hover {
+      background: #f9f9f9;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-approved {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #667eea;
+    }
+
+    .reinvestment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .option-card {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      border: 2px solid #f0f0f0;
+      transition: border-color 0.2s ease;
+    }
+
+    .option-card:hover {
+      border-color: #667eea;
+    }
+
+    .option-card h3 {
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+
+    .option-card p {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .profit-amount {
+      font-size: 24px;
+      font-weight: bold;
+      color: #28a745;
+      margin: 15px 0;
+    }
+
+    .cancellation-notice {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .cancellation-notice p {
+      margin: 0;
+      color: #856404;
+      font-size: 14px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      margin-top: 2px;
+      transform: scale(1.2);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 80px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <h1>🐐 Investor Dashboard</h1>
+    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+  </div>
+
+  <div class="container">
+    <!-- Summary Cards -->
+    <div class="cards-grid">
+      <div class="card">
+        <div class="icon">💰</div>
+        <h3>Total Invested</h3>
+        <div class="amount" id="totalInvested">PKR 0</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">📈</div>
+        <h3>Total Profit</h3>
+        <div class="amount" id="totalProfit">PKR 0</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">⏳</div>
+        <h3>Pending Approvals</h3>
+        <div class="amount" id="pendingCount">0</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">💸</div>
+        <h3>Available to Withdraw</h3>
+        <div class="amount" id="withdrawBalance">PKR 0</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>Total Transactions</h3>
+        <div class="amount" id="totalTransactions">0</div>
+      </div>
+
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>Active Plans</h3>
+        <div class="amount" id="activePlans">0</div>
+      </div>
+    </div>
+
+    <!-- New Investment Section -->
+    <div class="section">
+      <h2>Create New Investment</h2>
+      <form id="investmentForm">
+        <div class="form-group">
+          <label for="investmentAmount">Investment Amount (PKR)</label>
+          <input type="number" id="investmentAmount" placeholder="Enter amount" min="1000" required>
+        </div>
+        <div class="form-group">
+          <label for="transactionScreenshot">Transaction Screenshot (required)</label>
+          <input type="file" id="transactionScreenshot" accept="image/*" required>
+          <div id="screenshotPreview" style="margin-top:10px;"></div>
+        </div>
+        <p id="investmentError" style="color:#c0392b; margin-bottom:12px; display:none;">Please upload a screenshot before submitting.</p>
+        <button type="submit" class="btn">Submit Investment</button>
+      </form>
+    </div>
+
+    <!-- Investments History -->
+    <div class="section">
+      <h2>My Investments</h2>
+      <div id="investmentsContainer" class="loading">Loading investments...</div>
+    </div>
+
+    <!-- Profits History -->
+    <div class="section">
+      <h2>Profit History</h2>
+      <div id="profitsContainer" class="loading">Loading profits...</div>
+    </div>
+
+    <!-- Withdrawal Section -->
+    <div class="section">
+      <h2>Request Withdrawal</h2>
+      <form id="withdrawalForm">
+        <div class="form-group">
+          <label for="withdrawalAmount">Withdrawal Amount (PKR)</label>
+          <input type="number" id="withdrawalAmount" placeholder="Enter amount" min="100" required>
+        </div>
+        <div class="form-group">
+          <label for="accountNumber">Account Number</label>
+          <input type="text" id="accountNumber" placeholder="Enter bank/account number" required>
+        </div>
+        <div class="form-group">
+          <label for="accountHolderName">Account Holder Name</label>
+          <input type="text" id="accountHolderName" placeholder="Enter full account holder name" required>
+        </div>
+        <p id="withdrawalError" style="color:#c0392b; margin-bottom:12px; display:none;">All withdrawal fields are required.</p>
+        <button type="submit" class="btn">Request Withdrawal</button>
+      </form>
+    </div>
+
+    <!-- Profit Reinvestment Section -->
+    <div class="section">
+      <h2>Profit Reinvestment</h2>
+      <div class="reinvestment-options">
+        <div class="option-card" id="completeReinvestCard">
+          <h3>Complete Reinvest</h3>
+          <p>Reinvest your entire profit balance back into the farm</p>
+          <div class="profit-amount" id="completeReinvestAmount">PKR 0</div>
+          <button class="btn" id="completeReinvestBtn" disabled>Complete Reinvest</button>
+        </div>
+        <div class="option-card" id="partialReinvestCard">
+          <h3>Partial Reinvest</h3>
+          <p>Choose how much profit to reinvest</p>
+          <form id="partialReinvestForm">
+            <div class="form-group">
+              <label for="partialReinvestAmount">Amount to Reinvest (PKR)</label>
+              <input type="number" id="partialReinvestAmount" placeholder="Enter amount" min="100" max="0">
+            </div>
+            <button type="submit" class="btn">Partial Reinvest</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan Cancellation Section -->
+    <div class="section">
+      <h2>Plan Cancellation Request</h2>
+      <div class="cancellation-notice">
+        <p><strong>Note:</strong> Plan cancellation requests take 5 business days to process. You will receive your remaining balance after processing.</p>
+      </div>
+      <form id="cancellationForm">
+        <div class="form-group">
+          <label for="cancellationReason">Reason for Cancellation</label>
+          <select id="cancellationReason" required>
+            <option value="">Select a reason</option>
+            <option value="financial_difficulty">Financial Difficulty</option>
+            <option value="dissatisfied_returns">Dissatisfied with Returns</option>
+            <option value="personal_reasons">Personal Reasons</option>
+            <option value="found_better_investment">Found Better Investment Opportunity</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cancellationDetails">Additional Details (Optional)</label>
+          <textarea id="cancellationDetails" rows="4" placeholder="Please provide any additional information..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="cancellationAgreement" required>
+            I understand that this action cannot be undone and my remaining balance will be processed within 5 business days.
+          </label>
+        </div>
+        <p id="cancellationError" style="color:#c0392b; margin-bottom:12px; display:none;">Please fill all required fields and agree to the terms.</p>
+        <button type="submit" class="btn btn-danger">Submit Cancellation Request</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="src/investor-dashboard.js"></script>
+
+</body>
+</html>
